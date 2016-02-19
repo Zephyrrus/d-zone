@@ -208,3 +208,14 @@ Game.prototype.reset = function() {
         this.entities[0].remove();
     }
 };
+
+Game.prototype.findUserByName = function(name){
+  if(!name) return;
+  for (user in this.users.actors) {
+   if(this.users.actors[user].username.toLowerCase().indexOf(name.toLowerCase()) > -1) {
+    var actor = this.users.actors[user];
+    this.canvases[0].jumpXY(-actor.preciseScreen.x, -actor.preciseScreen.y, 0);
+    return; //return on first find, meh
+   }
+  }
+}
