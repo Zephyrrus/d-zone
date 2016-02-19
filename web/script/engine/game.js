@@ -27,6 +27,8 @@ function Game(options) {
     this.entities = [];
     this.schedule = [];
     this.mouseOver = false;
+    this.canvases = [];
+    this.following = null;
 
     var self = this;
     this.interval = setInterval(function() {
@@ -101,6 +103,7 @@ Game.prototype.bindCanvas = function(canvas) {
     this.input.on('touchstart', this.touchstart.bind(this));
     this.input.on('touchend', this.touchend.bind(this));
     this.input.on('touchcancel', this.touchcancel.bind(this));
+    this.canvases.push(canvas);
     canvas.on('resize',this.viewResize.bind(this));
 };
 
@@ -113,21 +116,22 @@ Game.prototype.viewResize = function(resize) {
 
 Game.prototype.mousemove = function(mouseEvent) {
     if(this.mouseOut) return;
-    //this.mouseOut = false;
     this.mouseX = mouseEvent.x;
     this.mouseY = mouseEvent.y;
     this.centerMouseX = Math.floor(mouseEvent.x - this.viewWidth / 2);
     this.centerMouseY = Math.floor(mouseEvent.y - this.viewHeight / 2);
     mouseEvent.centerMouseX = this.centerMouseX;
     mouseEvent.centerMouseY = this.centerMouseY;
-    //console.log({mouseX: this.mouseX, mouseY:this.mouseY, centerMouseX:this.centerMouseX, centerMouseY:this.centerMouseY});
     this.emit('mousemove',mouseEvent);
 };
 
 Game.prototype.mousedown = function(mouseEvent) {
     if(this.mouseOver) {
         console.log(this.mouseOver);
+        !this.following ? this.following = this.mouseOver : this.following == this.mouseOver ? this.following = null : this.following = this.mouseOver;
         window.actor = this.mouseOver;
+    }else{
+        this.following = null;
     }
     this.mouseButtons.push(mouseEvent.button);
     this.emit('mousedown',mouseEvent);
@@ -159,7 +163,10 @@ Game.prototype.touchcancel = function(mouseEvent) {
 Game.prototype.touchstart = function(mouseEvent) {
     if(this.mouseOver) {
         console.log(this.mouseOver);
+        !this.following ? this.following = this.mouseOver : this.following == this.mouseOver ? this.following = null : this.following = this.mouseOver;
         window.actor = this.mouseOver;
+    }else{
+        this.following = null;
     }
     this.mouseButtons.push(mouseEvent.button);
     this.emit('touchstart',mouseEvent);

@@ -38,11 +38,11 @@ function Actor(options) {
 
 Actor.prototype.onUpdate = function() {
     if(this.talking) this.updateSprite();
-    if(this.game.mouseOut || (this.game.mouseOver 
+    if(this.game.mouseOut || (this.game.mouseOver
         && (this.game.mouseOver.zDepth > this.zDepth // Don't override closer objects
         || this.game.mouseOver.position.z > this.position.z)) // Don't override higher objects
     || this.game.ui.mouseOnElement) return; // Ignore if mouse on UI element
-    var mouse = { 
+    var mouse = {
         x: this.game.centerMouseX - this.game.renderer.canvases[0].panning.panned.x,
         y: this.game.centerMouseY - this.game.renderer.canvases[0].panning.panned.y
     };
@@ -245,7 +245,7 @@ Actor.prototype.startTalking = function(message, channel, onStop) {
 };
 
 Actor.prototype.onMessage = function(message) { // Move this to the GoTo behavior
-    if(!message.channel || message.channel != this.lastChannel || message.user === this 
+    if(!message.channel || message.channel != this.lastChannel || message.user === this
         || this.presence != 'online') return;
     var self = this;
     function readyToMove() {

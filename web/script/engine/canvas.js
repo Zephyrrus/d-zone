@@ -136,6 +136,10 @@ Canvas.prototype.drawStatic = function(staticCanvas) {
 };
 
 Canvas.prototype.drawBG = function(bgCanvas) {
+    if(this.game.following){
+      this.panning.panned.x = -this.game.following.preciseScreen.x;
+      this.panning.panned.y = -this.game.following.preciseScreen.y;
+    }
     var x = bgCanvas.x + this.halfWidth + this.panning.panned.x,
         y = bgCanvas.y + this.halfHeight + this.panning.panned.y;
     if(x >= this.width || y >= this.height
@@ -200,3 +204,8 @@ Canvas.prototype.drawEntity = function(sprite) {
         this.context.fillText(sprite.grid,Math.round(screen.x)+5, Math.round(screen.y)+9);
     }
 };
+
+Canvas.prototype.jumpXY = function(x,y){
+  this.panning.panned.x = x;
+  this.panning.panned.y = y;
+}
